@@ -1,0 +1,235 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border-radius: 20px;
+    border: none;
+}
+
+.calculator {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.display-container {
+    position: relative;
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.memory-indicator {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    color: #6c757d;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.memory-indicator.active {
+    opacity: 1;
+    color: #0d6efd;
+}
+
+.display {
+    border: none;
+    background: transparent;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: right;
+    color: #212529;
+    padding: 10px 10px 5px 10px;
+    box-shadow: none !important;
+}
+
+.expression {
+    text-align: right;
+    color: #6c757d;
+    font-size: 1rem;
+    min-height: 20px;
+    padding: 0 10px;
+}
+
+.num-btn, .op-btn, .func-btn, .eq-btn, .memory-btn {
+    font-size: 1.3rem;
+    font-weight: 600;
+    height: 60px;
+    border-radius: 10px;
+    transition: all 0.2s;
+    border: none;
+}
+
+.num-btn {
+    background: #fff;
+    color: #212529;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.num-btn:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.num-btn:active {
+    transform: translateY(0);
+}
+
+.op-btn {
+    background: #0d6efd;
+    color: white;
+    box-shadow: 0 2px 5px rgba(13,110,253,0.3);
+}
+
+.op-btn:hover {
+    background: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13,110,253,0.4);
+}
+
+.func-btn {
+    font-size: 1.1rem;
+}
+
+.func-btn.btn-warning {
+    box-shadow: 0 2px 5px rgba(255,193,7,0.3);
+}
+
+.func-btn.btn-danger {
+    box-shadow: 0 2px 5px rgba(220,53,69,0.3);
+}
+
+.eq-btn {
+    background: #28a745;
+    color: white;
+    box-shadow: 0 2px 5px rgba(40,167,69,0.3);
+}
+
+.eq-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(40,167,69,0.4);
+}
+
+.memory-btn {
+    font-size: 1rem;
+    height: 45px;
+    background: #6c757d;
+    color: white;
+}
+
+.memory-btn:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.history-panel {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    min-height: 400px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.history-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.history-item {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #0d6efd;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.history-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.history-expression {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 3px;
+}
+
+.history-result {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #212529;
+}
+
+/* Scrollbar Styling */
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Error Animation */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.error {
+    animation: shake 0.3s;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .display {
+        font-size: 2rem;
+    }
+    
+    .num-btn, .op-btn, .func-btn, .eq-btn {
+        font-size: 1.1rem;
+        height: 50px;
+    }
+    
+    .memory-btn {
+        font-size: 0.9rem;
+        height: 40px;
+    }
+    
+    .history-panel {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .display {
+        font-size: 1.5rem;
+    }
+    
+    .num-btn, .op-btn, .func-btn, .eq-btn {
+        font-size: 1rem;
+        height: 45px;
+    }
+}
