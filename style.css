@@ -119,6 +119,20 @@ body {
     box-shadow: 0 4px 8px rgba(40,167,69,0.4);
 }
 
+/* Color Change Animation */
+@keyframes colorPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+}
+
+.btn-color-change {
+    animation: colorPulse 0.3s ease;
+}
+
 .memory-btn {
     font-size: 1rem;
     height: 45px;

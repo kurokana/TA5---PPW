@@ -12,6 +12,36 @@ const historyList = document.getElementById('historyList');
 // Initialize
 updateDisplay();
 
+// Random Color Generator
+function getRandomColor() {
+    const colors = [
+        '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
+        '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739', '#52B788',
+        '#FF9FF3', '#54A0FF', '#48DBFB', '#FF6348', '#1DD1A1',
+        '#FF6B81', '#5F27CD', '#00D2D3', '#FD79A8', '#A29BFE',
+        '#6C5CE7', '#FDCB6E', '#E17055', '#74B9FF', '#A29BFE'
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function getRandomGradient() {
+    const color1 = getRandomColor();
+    const color2 = getRandomColor();
+    return `linear-gradient(135deg, ${color1}, ${color2})`;
+}
+
+function changeButtonColor(button) {
+    const originalBg = button.style.background;
+    button.style.background = getRandomGradient();
+    button.classList.add('btn-color-change');
+    
+    // Kembalikan warna setelah 2 detik
+    setTimeout(() => {
+        button.style.background = originalBg;
+        button.classList.remove('btn-color-change');
+    }, 2000);
+}
+
 // Number Input
 function appendNumber(num) {
     if (waitingForNewValue) {
@@ -174,6 +204,31 @@ function clearEntry() {
     updateDisplay();
 }
 
+// Advanced Functions
+function backspace() {
+    if (waitingForNewValue || currentValue === '0') {
+        return;
+    }
+    
+    if (currentValue.length > 1) {
+        currentValue = currentValue.slice(0, -1);
+    } else {
+        currentValue = '0';
+    }
+    updateDisplay();
+}
+
+function percentage() {
+    if (currentValue === '' || currentValue === '0') {
+        return;
+    }
+    
+    const num = parseFloat(currentValue);
+    currentValue = (num / 100).toString();
+    waitingForNewValue = true;
+    updateDisplay();
+}
+
 // Display Updates
 function updateDisplay() {
     // Format number for display
@@ -325,19 +380,21 @@ document.addEventListener('keydown', function(event) {
     // Backspace
     if (key === 'Backspace') {
         event.preventDefault();
-        if (currentValue.length > 1) {
-            currentValue = currentValue.slice(0, -1);
-        } else {
-            currentValue = '0';
-        }
-        updateDisplay();
+        backspace();
+    }
+    
+    // Percentage
+    if (key === '%') {
+        event.preventDefault();
+        percentage();
     }
 });
 
-// Add button click animation
+// Add button click animation with random color
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('click', function() {
         this.style.transform = 'scale(0.95)';
+        changeButtonColor(this);
         setTimeout(() => {
             this.style.transform = '';
         }, 100);
