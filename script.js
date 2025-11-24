@@ -1,18 +1,14 @@
-// Calculator State
 let currentValue = '0';
 let expressionString = '';
 let waitingForNewValue = false;
 let history = [];
 
-// DOM Elements
 const display = document.getElementById('display');
 const expression = document.getElementById('expression');
 const historyList = document.getElementById('historyList');
 
-// Initialize
 updateDisplay();
 
-// Random Color Generator
 function getRandomColor() {
     const colors = [
         '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
@@ -35,14 +31,12 @@ function changeButtonColor(button) {
     button.style.background = getRandomGradient();
     button.classList.add('btn-color-change');
     
-    // Kembalikan warna setelah 2 detik
     setTimeout(() => {
         button.style.background = originalBg;
         button.classList.remove('btn-color-change');
     }, 2000);
 }
 
-// Number Input
 function appendNumber(num) {
     if (waitingForNewValue) {
         currentValue = num;
@@ -53,7 +47,6 @@ function appendNumber(num) {
     updateDisplay();
 }
 
-// Decimal Point
 function appendDecimal() {
     if (waitingForNewValue) {
         currentValue = '0.';
@@ -64,19 +57,16 @@ function appendDecimal() {
     updateDisplay();
 }
 
-// Set Operation
 function setOperation(op) {
     if (currentValue === '' && expressionString === '') {
         return;
     }
     
-    // Jika sudah ada angka yang diinput
     if (currentValue !== '') {
         expressionString += currentValue + ' ' + op + ' ';
         currentValue = '';
         waitingForNewValue = false;
     } else if (expressionString !== '') {
-        // Ganti operator terakhir jika user mengubah operator
         expressionString = expressionString.trim();
         const lastChar = expressionString[expressionString.length - 1];
         if (['+', '-', '×', '÷'].includes(lastChar)) {
@@ -88,27 +78,22 @@ function setOperation(op) {
     updateDisplay();
 }
 
-// Calculate Result dengan hirarki operasi
 function calculate() {
     try {
-        // Tambahkan angka terakhir ke expression
         let fullExpression = expressionString + currentValue;
         
         if (fullExpression.trim() === '' || fullExpression.trim() === currentValue) {
             return;
         }
         
-        // Evaluasi expression dengan hirarki operasi
         const result = evaluateExpression(fullExpression);
         
         if (!isFinite(result)) {
             throw new Error('Hasil tidak valid');
         }
         
-        // Add to history
         addToHistory(fullExpression, result);
         
-        // Update state
         currentValue = result.toString();
         expressionString = '';
         waitingForNewValue = true;
@@ -121,9 +106,7 @@ function calculate() {
     }
 }
 
-// Fungsi untuk evaluasi expression dengan hirarki operasi
 function evaluateExpression(expr) {
-    // Parse expression menjadi array of tokens
     const tokens = expr.split(' ').filter(t => t !== '');
     
     if (tokens.length === 0) {
@@ -134,7 +117,6 @@ function evaluateExpression(expr) {
         return parseFloat(tokens[0]);
     }
     
-    // Konversi ke array of numbers dan operators
     const numbers = [];
     const operators = [];
     
@@ -146,12 +128,10 @@ function evaluateExpression(expr) {
         }
     }
     
-    // Validasi
     if (numbers.length !== operators.length + 1) {
         throw new Error('Format perhitungan tidak valid');
     }
     
-    // Step 1: Process × dan ÷ (hirarki tinggi)
     let i = 0;
     while (i < operators.length) {
         if (operators[i] === '×') {
@@ -170,7 +150,6 @@ function evaluateExpression(expr) {
         }
     }
     
-    // Step 2: Process + dan - (hirarki rendah)
     i = 0;
     while (i < operators.length) {
         if (operators[i] === '+') {
@@ -189,7 +168,6 @@ function evaluateExpression(expr) {
     return numbers[0];
 }
 
-// Clear Functions
 function clearAll() {
     currentValue = '0';
     expressionString = '';
@@ -204,7 +182,6 @@ function clearEntry() {
     updateDisplay();
 }
 
-// Advanced Functions
 function backspace() {
     if (waitingForNewValue || currentValue === '0') {
         return;
@@ -229,18 +206,13 @@ function percentage() {
     updateDisplay();
 }
 
-// Display Updates
 function updateDisplay() {
-    // Format number for display
     let displayValue = currentValue;
     
-    // If it's a valid number, format it
     if (!isNaN(displayValue) && displayValue !== '') {
         const num = parseFloat(displayValue);
-        // Limit decimal places to 10
         if (displayValue.includes('.') && !displayValue.endsWith('.')) {
             displayValue = num.toFixed(Math.min(10, (displayValue.split('.')[1] || '').length));
-            // Remove trailing zeros
             displayValue = parseFloat(displayValue).toString();
         }
     }
@@ -256,7 +228,6 @@ function updateExpression() {
     }
 }
 
-// Error Display
 function showError(message) {
     display.value = message;
     display.classList.add('error');
@@ -267,7 +238,6 @@ function showError(message) {
     }, 2000);
 }
 
-// History Functions
 function addToHistory(expr, result) {
     const historyItem = {
         expression: expr,
@@ -277,7 +247,6 @@ function addToHistory(expr, result) {
     
     history.unshift(historyItem);
     
-    // Keep only last 5 items
     if (history.length > 5) {
         history.pop();
     }
@@ -324,30 +293,25 @@ function clearHistory() {
 }
 
 function formatNumber(num) {
-    // Format number with max 10 decimal places
     if (Number.isInteger(num)) {
         return num.toString();
     }
     return parseFloat(num.toFixed(10)).toString();
 }
 
-// Keyboard Support
 document.addEventListener('keydown', function(event) {
     const key = event.key;
     
-    // Numbers
     if (key >= '0' && key <= '9') {
         event.preventDefault();
         appendNumber(key);
     }
     
-    // Decimal point
     if (key === '.' || key === ',') {
         event.preventDefault();
         appendDecimal();
     }
     
-    // Operations
     if (key === '+') {
         event.preventDefault();
         setOperation('+');
@@ -365,32 +329,28 @@ document.addEventListener('keydown', function(event) {
         setOperation('÷');
     }
     
-    // Calculate
     if (key === 'Enter' || key === '=') {
         event.preventDefault();
         calculate();
     }
     
-    // Clear
     if (key === 'Escape') {
         event.preventDefault();
         clearAll();
     }
     
-    // Backspace
+    
     if (key === 'Backspace') {
         event.preventDefault();
         backspace();
     }
     
-    // Percentage
     if (key === '%') {
         event.preventDefault();
         percentage();
     }
 });
 
-// Add button click animation with random color
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('click', function() {
         this.style.transform = 'scale(0.95)';
